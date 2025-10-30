@@ -50,5 +50,6 @@ jobs:
 
       # 6 : Debug all inputs
       - name: Debug all inputs
-        run: echo "${{ toJson(github.event.inputs) }}"
+        run:  |
+           echo "${{ toJson(github.event.inputs) }}"
 
