@@ -2,6 +2,12 @@ name: Initial Action Workflow
 
 on:
   push:
+  workflow_dispatch:
+    inputs:
+      custom_message:
+        description: "Description of the custom message"
+        required: true
+        default: "default input"
 
 jobs:
   gitHubInfos:
@@ -9,10 +15,36 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: "Display GitHub Context"
+      # 1 : Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2  Cache
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.npm
+            node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      # 3 : node modules installation
+      - name: Install dependencies
+        run: npm ci
+
+      # 4 : Display gitHub context
+      - name: Display GitHub Context
         id: ghdetails
         run: |
           echo "=== GitHub Context ==="
           echo "${GITHUB_CONTEXT}"
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
+
+      # 5 : Display input
+      - name: Display custom input
+        run: |
+          echo "=== DISPLAYED INPUT ==="
+          echo "${{ github.event.inputs.custom_message }}"
