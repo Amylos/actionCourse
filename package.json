@@ -17,12 +17,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "build": "minify index.js -o index.min.js"
+    "build": "npx terser index.js -o index.min.js -c -m"
   },
   "dependencies": {
     "express": "^5.1.0"
   },
   "devDependencies": {
-    "minify": "^14.1.0"
+    "terser": "^5.44.0"
   }
 }

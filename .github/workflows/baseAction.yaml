@@ -7,14 +7,13 @@ on:
         description: "Description of the custom message"
         required: true
         default: "default input"
-
 jobs:
   gitHubInfos:
     name: Get GitHub infos
     runs-on: ubuntu-latest
 
     steps:
-      # 1 : Checkout repository
+      # 1 : Checkout repo
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -29,9 +28,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      # 3 : node modules installation
+      # 3 : node modules
       - name: Install dependencies
         run: npm ci
+
+      # 4 : Build
+      - name: Build project
+        run: npx terser index.js -o index.min.js -c -m
 
       # 4 : Display gitHub context
       - name: Display GitHub Context
@@ -47,9 +50,3 @@ jobs:
         run: |
           echo "=== DISPLAYED INPUT ==="
           echo "${{ github.event.inputs.custom_message }}"
-
-      # 6 : Debug all inputs
-      - name: Debug all inputs
-        run:  |
-           echo "${{ toJson(github.event.inputs) }}"
-
