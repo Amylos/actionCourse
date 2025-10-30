@@ -1,7 +1,6 @@
 name: Initial Action Workflow
 
 on:
-  push:
   workflow_dispatch:
     inputs:
       custom_message:
@@ -48,3 +47,8 @@ jobs:
         run: |
           echo "=== DISPLAYED INPUT ==="
           echo "${{ github.event.inputs.custom_message }}"
+
+      # 6 : Debug all inputs
+      - name: Debug all inputs
+        run: echo "${{ toJson(github.event.inputs) }}"
+
